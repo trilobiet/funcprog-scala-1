@@ -37,7 +37,8 @@ object Anagrams extends AnagramsInterface {
 
     w.toList
       .groupBy(char => char.toLower)
-      .map[(Char,Int)]( kv => (kv._1, kv._2.length) ) // map to (char, char count)
+      // .map[(Char,Int)]( kv => (kv._1, kv._2.length) ) // map to (char, char count)
+      .map[(Char,Int)]{ case(k,v) => (k, v.length) } // better map to (use pattern match)
       .toList.sortBy(e => e._1) // order by first (char)
   }
 
@@ -67,10 +68,15 @@ object Anagrams extends AnagramsInterface {
    *    List(('a', 1), ('e', 1), ('t', 1)) -> Seq("ate", "eat", "tea")
    *
    */
-  lazy val dictionaryByOccurrences: Map[Occurrences, List[Word]] = ???
+  lazy val dictionaryByOccurrences: Map[Occurrences, List[Word]] =
+    dictionary.groupBy(word => wordOccurrences(word))
+
 
   /** Returns all the anagrams of a given word. */
-  def wordAnagrams(word: Word): List[Word] = ???
+  def wordAnagrams(word: Word): List[Word] =
+    dictionaryByOccurrences.getOrElse(wordOccurrences(word),List.empty)
+
+
 
   /** Returns the list of all subsets of the occurrence list.
    *  This includes the occurrence itself, i.e. `List(('k', 1), ('o', 1))`
@@ -94,7 +100,24 @@ object Anagrams extends AnagramsInterface {
    *  Note that the order of the occurrence list subsets does not matter -- the subsets
    *  in the example above could have been displayed in some other order.
    */
-  def combinations(occurrences: Occurrences): List[Occurrences] = ???
+  def combinations(occurrences: Occurrences): List[Occurrences] = {
+
+    occurrences match {
+      case Nil => List(Nil)
+      case (char,n) :: tail =>
+        for (cc <- combinations(tail); count <- 0 to n) yield  // see remark
+          if (count == 0) cc
+          else (char, count) :: cc
+    }
+
+    /* remark:
+    The generated collection is compatible with the first generator.
+    (SCALA for the impatient 2.6 'Advanced for Loops'.)
+    Therefore cc is generated first. Do not reverse the generators.
+    */
+
+  }
+
 
   /** Subtracts occurrence list `y` from occurrence list `x`.
    *
@@ -172,8 +195,17 @@ object Dictionary {
 }
 
 object Main extends App {
-  val w = "buuuuurp"
+  val w = "Slartibartfast"
   val g = w.toList.groupBy(char => char.toLower)
-    .map[(Char,Int)]( kv => (kv._1, kv._2.length) ).toList.sortBy(e => e._1)
+    .map[(Char,Int)]{ case(k,v) => (k, v.length) }
+    .toList.sortBy(e => e._1)
   println(g)
+
+  val a = Anagrams
+  val oc = a.sentenceOccurrences(List("I","would","much","rather","be","happy","than","right","any","day"))
+  println(oc)
+
+  println(a.dictionaryByOccurrences.get(List(('a', 1), ('e', 1), ('t', 1))))
+
+  println(a.wordAnagrams("silent"))
 }
