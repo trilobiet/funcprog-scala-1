@@ -40,6 +40,15 @@ class AnagramsSuite {
     assertEquals(lad, subtract(lard, r))
   }
 
+  @Test def `subtract: aldaar - ar (10pts)`: Unit = {
+    val aldaar = List(('a', 3), ('d', 1), ('l', 1), ('r', 1))
+    val ar = List(('a', 1),('r', 1))
+    val alda = List(('a', 2), ('d', 1), ('l', 1))
+    assertEquals(alda, subtract(aldaar, ar))
+  }
+
+
+
 
   @Test def `combinations: [] (8pts)`: Unit =
     assertEquals(List(Nil), combinations(Nil))
@@ -92,6 +101,51 @@ class AnagramsSuite {
     )
     assertEquals(anas.toSet, sentenceAnagrams(sentence).toSet)
   }
+
+  @Test def `sentence anagrams: A mad`: Unit = {
+    val sentence = List("A", "mad")
+    val anas = List(
+      List("Adam"),
+      List("ad", "am"),
+      List("am", "ad")
+    )
+    assertEquals(anas.toSet, sentenceAnagrams(sentence).toSet)
+  }
+
+  @Test def `sentence anagrams: Am mad`: Unit = {
+    val sentence = List("am","mad")
+    val anas = List(
+      List("mad", "am"),
+      List("am", "dam"),
+      List("am", "mad"),
+      List("madam"),
+      List("dam", "am")
+    )
+    assertEquals(anas.toSet, sentenceAnagrams(sentence).toSet)
+  }
+
+  @Test def `sentence anagrams: Yes man`: Unit = {
+    val sentence = List("Yes","man")
+    val anas =  List(
+      List("en", "as", "my"),
+      List("en", "my", "as"),
+      List("man", "yes"),
+      List("men", "say"),
+      List("as", "en", "my"),
+      List("as", "my", "en"),
+      List("sane", "my"),
+      List("Sean", "my"),
+      List("my", "en", "as"),
+      List("my", "as", "en"),
+      List("my", "sane"),
+      List("my", "Sean"),
+      List("say", "men"),
+      List("yes", "man")
+    )
+    assertEquals(anas.toSet, sentenceAnagrams(sentence).toSet)
+  }
+
+
 
 
   @Rule def individualTestTimeout = new org.junit.rules.Timeout(10 * 1000)
