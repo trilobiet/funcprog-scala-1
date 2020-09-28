@@ -1,0 +1,24 @@
+
+sentence: List(Word)      
+    
+    List(Linux, rulez)
+    
+sentenceOccurrences(sentence): List[(Char, Int)]
+    
+    List((e,1), (i,1), (l,2), (n,1), (r,1), (u,2), (x,1), (z,1))
+    
+dictionaryByOccurrences(occurrences): Map[Occurrences, List[Word]]
+
+    List(('a', 1), ('e', 1), ('t', 1)) -> Seq("ate", "eat", "tea")
+    
+combinations(occurrences: Occurrences): List[Occurrences]    
+
+    List(),
+    List(('a', 1)),
+    List(('a', 2)),
+    List(('b', 1)),
+    List(('a', 1), ('b', 1)),
+    List(('a', 2), ('b', 1)),
+    List(('b', 2)),
+    List(('a', 1), ('b', 2)),
+    List(('a', 2), ('b', 2))

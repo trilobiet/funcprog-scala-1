@@ -250,4 +250,8 @@ object Main extends App {
   println(a.dictionaryByOccurrences.get(List(('a', 1), ('e', 1), ('t', 1))))
 
   println(a.wordAnagrams("silent"))
+
+  println(a.sentenceAnagrams(List("How","do","you","do")))
+
+  println(a.sentenceAnagrams(List("Scala","rules")))
 }
