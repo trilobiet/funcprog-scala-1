@@ -1,0 +1,13 @@
+https://www.coursera.org/learn/progfun2/discussions/weeks/5/threads/pcgl5d7REeqx2Q6oZV-xlw
+
+PROBLEM
+=======
+CalculatorSuite isn't able to import any of the source files (TweetLength, Calculator, Polynomial), as a result, every test is failing. Could someone please help troubleshoot this?
+
+SOLUTION (IntelliJ):
+====================
+1. Right-click the "calculator [progfun2-calculator]", and click "Open Module Settings"
+
+2. "Project Settings" -> "Modules" -> "progfun2-calculator" -> "Dependencies" -> "+" in the bottom -> "Module Dependency..." -> Select "shared-sources" -> "OK" -> "OK"
+
+And now the "TweetLength" in your "CalculatorSuite" will no longer in Red.

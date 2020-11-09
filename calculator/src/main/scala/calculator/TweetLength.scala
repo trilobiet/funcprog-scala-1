@@ -2,13 +2,22 @@ package calculator
 
 object TweetLength extends TweetLengthInterface {
   final val MaxTweetLength = 140
+  final private val color = Var("orange")
 
   def tweetRemainingCharsCount(tweetText: Signal[String]): Signal[Int] = {
-    ???
+    Signal(MaxTweetLength-tweetLength(tweetText()))
   }
 
   def colorForRemainingCharsCount(remainingCharsCount: Signal[Int]): Signal[String] = {
-    ???
+
+    // color is a function that returns a String
+    val color: () => String = () => remainingCharsCount() match {
+      case x if x >= 15 => "green"
+      case x if x < 0  => "red"
+      case _ => "orange"
+    }
+
+    Signal(color())
   }
 
   /** Computes the length of a tweet, given its text string.

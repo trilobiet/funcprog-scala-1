@@ -81,15 +81,21 @@ class CalculatorSuite {
     assert(kindaEqual(result().min, -3.732050807568877))
     assert(kindaEqual(result().max, -0.2679491924311228))
 
+    println("My result 1: " + result())
+
     a() = -5.3
     delta() = 37.2
     assertEquals(2, result().size)
     assert(kindaEqual(result().min, -0.1980358747915814))
     assert(kindaEqual(result().max, 0.9527528559236569))
 
+    println("My result 2: " + result())
+
     c() = -123.456
     delta() = -2601.2672
     assertEquals(0, result().size)
+
+    println("My result 3: " + result())
   }
 
   /****************
