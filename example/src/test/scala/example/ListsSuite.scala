@@ -25,7 +25,7 @@ import org.junit.Assert.assertEquals
   }
 
   @Test def `one plus one is three (0pts)?`: Unit = {
-    assert(1 + 1 == 3) // This assertion fails! Go ahead and fix it.
+    assert(1 + 2 == 3) // This assertion fails! Go ahead and fix it.
   }
 
   /**
@@ -50,7 +50,7 @@ import org.junit.Assert.assertEquals
    * when writing tests.
    */
   @Test def `details why one plus one is not three (0pts)`: Unit = {
-    Assert.assertEquals(3, 1 + 1) // Fix me, please!
+    Assert.assertEquals(3, 1 + 2) // Fix me, please!
   }
 
   /**
