@@ -69,9 +69,8 @@ package object scalashop extends BoxBlurKernelInterface {
       atot += alpha(sample)
     }
 
-    // return average color
-    val size = 2*radius+1
-    val q = size*size
+    // return average color (divide by participating pixels that remain after clamping)
+    val q = (xmax-xmin+1)*(ymax-ymin+1)
 
     rgba(rtot/q,gtot/q,btot/q,atot/q)
   }
