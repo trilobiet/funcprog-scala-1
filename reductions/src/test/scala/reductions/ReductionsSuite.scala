@@ -12,13 +12,32 @@ class ReductionsSuite {
    *****************/
 
   import LineOfSight._
+
   @Test def `lineOfSight should correctly handle an array of size 4`: Unit = {
     val output = new Array[Float](4)
     lineOfSight(Array[Float](0f, 1f, 8f, 9f), output)
     assertEquals(List(0f, 1f, 4f, 4f), output.toList)
   }
 
+  @Test def `lineOfSight should correctly handle an array of size 6`: Unit = {
+    val output = new Array[Float](6)
+    lineOfSight(Array[Float](0f, 1f, 8f, 9f, 20f, 15f), output)
+    assertEquals(List(0f, 1f, 4f, 4f, 5f, 5f), output.toList)
+  }
 
+  // acdhirr
+  @Test def `upsweepSequential should correctly handle an array of size 4`: Unit = {
+    val output = new Array[Float](4)
+    val v: Float = upsweepSequential(Array[Float](0f, 1f, 8f, 9f), 0, 4)
+    assertEquals(4f, v,0.0)
+  }
+
+  // acdhirr
+  @Test def `upsweepSequential should correctly handle an array of size 6`: Unit = {
+    val output = new Array[Float](6)
+    val v: Float = upsweepSequential(Array[Float](0f, 1f, 8f, 9f, 20f, 15f), 2, 6)
+    assertEquals(5f, v,0.0)
+  }
 
 
   /*******************************
@@ -118,6 +137,7 @@ class ReductionsSuite {
     check(").", false)
   }
 
+  // Tests below by acdhirr ==============================================================
   val threshold = 5
 
   @Test def `parBalance should work for empty string`: Unit = {
@@ -176,10 +196,6 @@ class ReductionsSuite {
     check("(.)(.))(.)", false)
     check(").(()())))", false)
   }
-
-
-
-
 
 
   @Rule def individualTestTimeout = new org.junit.rules.Timeout(10 * 1000)

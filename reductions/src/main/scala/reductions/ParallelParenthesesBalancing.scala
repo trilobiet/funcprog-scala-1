@@ -56,8 +56,9 @@ object ParallelParenthesesBalancing extends ParallelParenthesesBalancingInterfac
    */
   def parBalance(chars: Array[Char], threshold: Int): Boolean = {
 
-    println(chars.mkString(""))
+    // println(chars.mkString(""))
 
+    @tailrec
     def traverse(idx: Int, until: Int, opened: Int, closed: Int): (Int,Int) = {
       if (idx == until) (opened, closed)
       else if (chars(idx) == '(') traverse(idx+1, until, opened+1, closed )
@@ -72,10 +73,10 @@ object ParallelParenthesesBalancing extends ParallelParenthesesBalancingInterfac
       else {
         val mid = (until+from)/2
         val ( (leftOpened,leftClosed), (rightOpened,rightClosed) ) = parallel( reduce(from, mid), reduce(mid,until) )
-        // uncomment this if you want to see what happens
-        println( " ---> " + chars.slice(from,mid).mkString("")
+        // uncomment this if you want to see what happens:
+        /* println( " ---> " + chars.slice(from,mid).mkString("")
           + " = " + (leftOpened,leftClosed) + "\n ---> "
-          + chars.slice(mid,until).mkString("") + " = " + (rightOpened,rightClosed) )
+          + chars.slice(mid,until).mkString("") + " = " + (rightOpened,rightClosed) ) */
         val inner = leftOpened - rightClosed
         (
           rightOpened + (if (inner > 0) inner else 0),
@@ -90,8 +91,5 @@ object ParallelParenthesesBalancing extends ParallelParenthesesBalancingInterfac
 
   // For those who want more:
   // Prove that your reduction operator is associative!
-  /*
-
-  */
 
 }
