@@ -44,11 +44,21 @@ class KMeans extends KMeansInterface {
   }
 
   def classify(points: Seq[Point], means: Seq[Point]): Map[Point, Seq[Point]] = {
-    ???
+    val z = points.groupBy(p => findClosest(p,means))
+    // make sure that all the means are in the resulting map, even if their sequences are empty
+    val q = for (
+      m <- means
+    ) yield (m, z.getOrElse(m, Seq())) // get list of points or else map empty list
+    q.toMap
   }
 
   def classify(points: ParSeq[Point], means: ParSeq[Point]): ParMap[Point, ParSeq[Point]] = {
-    ???
+    val z = points.par.groupBy(p => findClosest(p,means))
+    // make sure that all the means are in the resulting map, even if their sequences are empty
+    val q = for (
+      m <- means.par
+    ) yield (m, z.par.getOrElse(m, ParSeq())) // get list of points or else map empty list
+    q.toMap
   }
 
   def findAverage(oldMean: Point, points: Seq[Point]): Point = if (points.isEmpty) oldMean else {
@@ -76,19 +86,19 @@ class KMeans extends KMeansInterface {
   }
 
   def update(classified: Map[Point, Seq[Point]], oldMeans: Seq[Point]): Seq[Point] = {
-    ???
+    oldMeans.map(mean => findAverage( mean, classified(mean) ) )
   }
 
   def update(classified: ParMap[Point, ParSeq[Point]], oldMeans: ParSeq[Point]): ParSeq[Point] = {
-    ???
+    oldMeans.par.map(mean => findAverage( mean, classified(mean) ) )
   }
 
   def converged(eta: Double, oldMeans: Seq[Point], newMeans: Seq[Point]): Boolean = {
-    ???
+    newMeans.zip(oldMeans).count{ case (m1, m2) => m1.squareDistance(m2) > eta } == 0
   }
 
   def converged(eta: Double, oldMeans: ParSeq[Point], newMeans: ParSeq[Point]): Boolean = {
-    ???
+    newMeans.zip(oldMeans).par.count{ case (m1, m2) => m1.squareDistance(m2) > eta } == 0
   }
 
   @tailrec
