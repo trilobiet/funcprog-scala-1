@@ -94,21 +94,27 @@ class KMeans extends KMeansInterface {
   }
 
   def converged(eta: Double, oldMeans: Seq[Point], newMeans: Seq[Point]): Boolean = {
+    // No entries in newMeans must be more than eta removed from the corresponding entries in oldMeans
     newMeans.zip(oldMeans).count{ case (m1, m2) => m1.squareDistance(m2) > eta } == 0
   }
 
   def converged(eta: Double, oldMeans: ParSeq[Point], newMeans: ParSeq[Point]): Boolean = {
+    // No entries in newMeans must be more than eta removed from the corresponding entries in oldMeans
     newMeans.zip(oldMeans).par.count{ case (m1, m2) => m1.squareDistance(m2) > eta } == 0
   }
 
   @tailrec
   final def kMeans(points: Seq[Point], means: Seq[Point], eta: Double): Seq[Point] = {
-    if (???) kMeans(???, ???, ???) else ??? // your implementation need to be tail recursive
+    val classified = classify(points,means)
+    val newMeans = update(classified,means)
+    if (!converged(eta,means,newMeans)) kMeans(points, newMeans, eta) else newMeans // your implementation need to be tail recursive
   }
 
   @tailrec
   final def kMeans(points: ParSeq[Point], means: ParSeq[Point], eta: Double): ParSeq[Point] = {
-    if (???) kMeans(???, ???, ???) else ??? // your implementation need to be tail recursive
+    val classified = classify(points,means)
+    val newMeans = update(classified,means)
+    if (!converged(eta,means,newMeans)) kMeans(points, newMeans, eta) else newMeans // your implementation need to be tail recursive
   }
 }
 
