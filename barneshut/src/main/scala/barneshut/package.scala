@@ -175,7 +175,7 @@ package object barneshut {
         case Fork(nw, ne, sw, se) =>
           // see if node is far enough from the body
           val dist = distance(x,y,quad.centerX,quad.centerY)
-          if (quad.size / dist < theta) {
+          if (quad.size / dist < theta) { // threshold
             // add force contribution of quad center of mass
             addForce( quad.mass, quad.massX, quad.massY )
           }
@@ -203,19 +203,46 @@ package object barneshut {
   val SECTOR_PRECISION = 8
 
   class SectorMatrix(val boundaries: Boundaries, val sectorPrecision: Int) extends SectorMatrixInterface {
+
     val sectorSize = boundaries.size / sectorPrecision
     val matrix = new Array[ConcBuffer[Body]](sectorPrecision * sectorPrecision)
     for (i <- 0 until matrix.length) matrix(i) = new ConcBuffer
 
+    /*
+    This method should use the body position, boundaries and sectorPrecision
+    to determine the sector into which the body should go into,
+    and add the body into the corresponding ConcBuffer object.
+    */
     def +=(b: Body): SectorMatrix = {
-      ???
+      // determine into which cell Body b must be inserted
+      println(b.x,b.y)
+      val x = (((b.x max boundaries.minX) min boundaries.maxX) / sectorSize).toInt
+      val y = (((b.y max boundaries.minY) min boundaries.maxY) / sectorSize).toInt
+      println(x,y)
+      println("boundaries: " + boundaries)
+      println("sectorPrecision: " + sectorPrecision)
+      println("sectorSize: " + sectorSize)
+      val cell = y * sectorPrecision + x
+      println(cell)
+      // add Body b to the cell
+      matrix(cell).+=(b)
       this
     }
 
     def apply(x: Int, y: Int) = matrix(y * sectorPrecision + x)
 
     def combine(that: SectorMatrix): SectorMatrix = {
-      ???
+
+      // A new matrix to be populated with this matrix and that matrix
+      val newMatrix = new SectorMatrix(boundaries,sectorPrecision)
+
+      // You can safely assume that combine will only be called on matrices
+      // of same dimensions, boundaries and sector precision.
+      matrix.zipWithIndex.foreach{ case(cb,i) =>
+        newMatrix.matrix(i) = matrix(i).combine(that.matrix(i))
+      }
+
+      newMatrix
     }
 
     def toQuad(parallelism: Int): Quad = {
