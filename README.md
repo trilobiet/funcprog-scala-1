@@ -1,9 +1,9 @@
 
-###Coursera
+### Coursera
 
 [www.coursera.org/specializations/scala](https://www.coursera.org/specializations/scala)
 
-#Functional Programming in Scala Specialization
+# Functional Programming in Scala Specialization
 
 1. Functional Programming Principles in Scala
 2. Functional Program Design in Scala
