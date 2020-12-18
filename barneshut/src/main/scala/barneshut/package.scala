@@ -67,9 +67,6 @@ package object barneshut {
 
     def insert(b: Body): Fork = {
 
-      val halfSize = size / 2
-      val bodies = Seq(b)
-
       b match {
         case b: Body if b.x < centerX && b.y < centerY => Fork(nw.insert(b),ne,sw,se)  // nw
         case b: Body if b.x >= centerX && b.y < centerY => Fork(nw,ne.insert(b),sw,se)  // ne
@@ -102,12 +99,12 @@ package object barneshut {
 
       // This Leaf is too small to be forked: insert new body in Leaf
       if (size <= minimumSize)
-        Leaf(centerX,centerY,size+1,bodies:+b)
+        Leaf(centerX,centerY,size,bodies:+b)
 
       // This Leaf is large enough to be forked, so create a new Fork
       else {
-        val half = size/2
-        val offset = size/4
+        val half = size/2f
+        val offset = size/4f
         val newFork = Fork( // fill with Empty Quads
           Empty( centerX-offset, centerY-offset, half ), // nw
           Empty( centerX+offset, centerY-offset, half ), // ne
