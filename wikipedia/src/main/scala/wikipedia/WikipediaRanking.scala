@@ -112,9 +112,9 @@ object WikipediaRanking extends WikipediaRankingInterface {
 
     val p: RDD[(String, Int)] =
       rdd
-      .flatMap(art => languagesForArticle(art))
-      .reduceByKey(_+_)
-      .sortBy { case (lang, count) => count }
+        .flatMap(art => languagesForArticle(art))
+        .reduceByKey(_+_)
+        .sortBy { case (lang, count) => count }
 
     p.collect().toList.reverse
   }
