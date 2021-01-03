@@ -136,6 +136,7 @@ object WikipediaRanking extends WikipediaRankingInterface {
 
     /* Output the speed of each ranking */
     println(timing)
+    println(langsRanked3)
     sc.stop()
   }
 
