@@ -117,11 +117,19 @@ class StackOverflow extends StackOverflowInterface with Serializable {
     // 4: replace list of answers with highest score
     // val q4: RDD[(Question, HighScore)] = q3.mapValues(v => answerHighScore(v.toArray))
 
+    /*
     grouped
       .map(g => g._2)
       .flatMap(i=>i)
       .groupByKey()
       .mapValues(v => answerHighScore(v.toArray))
+    */
+
+    grouped
+      .map(g => g._2)
+      .flatMap(i=>i)
+      .map{ case(q,a) => (q, a.score) }
+      .reduceByKey( _+_ )
 
   }
 
