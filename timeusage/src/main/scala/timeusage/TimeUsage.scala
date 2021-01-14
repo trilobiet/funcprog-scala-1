@@ -84,7 +84,7 @@ object TimeUsage extends TimeUsageInterface {
     val otherActivities =
       columnNames.filter( name => List("t02","t04","t06","t07","t08","t09","t10","t12","t13","t14","t15","t16","t18")
         .exists( p => name.startsWith(p) )
-      ).filterNot( name => (primaryNeeds::workingActivities).contains(name) )
+      ).filterNot( name => (primaryNeeds:::workingActivities).contains(name) )
 
     val primaryNeedsCols = primaryNeeds.map( name => new Column(name) )
     val workingActivitiesCols = workingActivities.map( name => new Column(name) )
